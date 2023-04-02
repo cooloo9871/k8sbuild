@@ -2,7 +2,7 @@
 
 # Debug mode
 set -x
-set -o pipefail
+# set -o pipefail
 
 OS=$(cat /etc/os-release | grep -w ID |cut -d '=' -f2)
 IP=$(ifconfig eth0| grep inet | tr -s \ - | cut -d ":" -f2 | cut -d ' ' -f1 )
@@ -33,7 +33,7 @@ sudo rc-update add cgroups
 
 sudo rc-service cgroups start
 
-sudo mkdir /etc/cni/podman
+sudo mkdir -p /etc/cni/podman
 
 sudo mv /etc/cni/net.d/cni.lock /etc/cni/podman/
 
