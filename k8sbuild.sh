@@ -136,7 +136,8 @@ INSTALL_CNI() {
 }
 
 SET_K8S_ADMIN() {
-  if ! (mkdir -p "$HOME"/.kube; sudo cp -i /etc/kubernetes/admin.conf "$HOME"/.kube/co>    echo "$(hostname) Set bigred as admin failed!" && exit 1
+  if ! (mkdir -p "$HOME"/.kube; sudo cp -i /etc/kubernetes/admin.conf "$HOME"/.kube/config; sudo chown "$(id -u)":"$(id -g)" "$HOME"/.kube/config); then
+    echo "$(hostname) Set bigred as admin failed!" && exit 1
   fi
 }
 
