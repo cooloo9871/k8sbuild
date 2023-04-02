@@ -1,0 +1,29 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: $IP                   # change from Master node IP
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///run/crio/crio.sock         # change from CRI-O Unix Socket
+  imagePullPolicy: IfNotPresent
+  name: $HOSTNAME                                                     # change from Master node hsotname
+  taints: []
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: topgun                                        # set your clusterName
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.k8s.io
+kind: ClusterConfiguration
+kubernetesVersion: 1.26.3
+networking:
+  dnsDomain: k8s.org                                        # DNS domain used by Kubernetes Services.
+  podSubnet: 10.244.0.0/16                              # the subnet used by Pods.
+  serviceSubnet: 10.98.0.0/24                           # subnet used by Kubernetes Services.
+scheduler: {}
