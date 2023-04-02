@@ -5,7 +5,7 @@ set -x
 set -o pipefail
 
 OS=$(cat /etc/os-release | grep -w ID |cut -d '=' -f2)
-IP=$(ifconfig eth0|grep inet|tr -s \ -|cut -d ":" -f2|cut -d ' ' -f1)
+IP=$(ifconfig eth0| grep inet | tr -s \ - | cut -d ":" -f2 | cut -d ' ' -f1 )
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 CNI="flannel"
 
@@ -19,7 +19,7 @@ CHECK_VAR() {
 }
 
 ALPINE() {
-sudo apk update;sudo apk upgrade
+sudo apk update;sudo apk upgrade;sudo apk add sudo
 
 # close ipv6
 cat <<EOF | sudo tee /etc/sysctl.conf
@@ -135,10 +135,15 @@ INSTALL_CNI() {
   fi
 }
 
+SET_K8S_ADMIN() {
+  if ! (mkdir -p "$HOME"/.kube; sudo cp -i /etc/kubernetes/admin.conf "$HOME"/.kube/co>    echo "$(hostname) Set bigred as admin failed!" && exit 1
+  fi
+}
 
 if [ "$OS" == "alpine" ]; then
   CHECK_VAR
   ALPINE
   INIT_K8S
   INSTALL_CNI
+  SET_K8S_ADMIN
 fi
