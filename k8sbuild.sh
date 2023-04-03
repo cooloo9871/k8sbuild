@@ -141,10 +141,20 @@ SET_K8S_ADMIN() {
   fi
 }
 
+UNTAINT() {
+  if ! cat "${script_dir}"/init-config.yaml | grep 'taints: \[\]' &> /dev/null; then
+    kubectl taint node "$HOSTNAME" node-role.kubernetes.io/control-plane:NoSchedule- &> /dev/null
+    if [ "$?" != "0" ]; then
+      echo "node/"$HOSTNAME" untainted failed" && exit 1
+    fi
+  fi
+}
+
 if [ "$OS" == "alpine" ]; then
   CHECK_VAR
   ALPINE
   INIT_K8S
   INSTALL_CNI
   SET_K8S_ADMIN
+  UNTAINT
 fi
