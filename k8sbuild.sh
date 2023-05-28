@@ -12,7 +12,7 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 CNI="calico"
 
 CHECK_VAR() {
- var_names=("HOSTNAME" "k8sversion" "OS" "IP" "SCRIPT_DIR" "CNI")
+ var_names=("HOSTNAME" "OS" "IP" "SCRIPT_DIR" "CNI")
   for var_name in "${var_names[@]}"
   do
       [ -z "${!var_name}" ] && echo "$var_name is unset." && exit 1
