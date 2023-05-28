@@ -5,7 +5,7 @@ set -x
 # set -o pipefail
 
 export HOSTNAME=$(cat /etc/hostname)
-export k8sversion=(kubeadm version | cut -d ',' -f3 | cut -d '"' -f2)
+export k8sversion=$(kubeadm version | cut -d ',' -f3 | cut -d '"' -f2)
 export IP=$(ip a s eth0 | grep inet | tr -s \ - | cut -d ' ' -f3 | cut -d '/' -f1)
 OS=$(cat /etc/os-release | grep -w ID |cut -d '=' -f2)
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
