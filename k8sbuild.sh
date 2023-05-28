@@ -119,7 +119,7 @@ sudo rc-update add kubelet default
 }
 
 INIT_K8S() {
-  cat "${SCRIPT_DIR}"/init-config.yaml > "${SCRIPT_DIR}"/init-tmp-config.yaml && 
+  cat "${SCRIPT_DIR}"/init-config.yaml | envsubst > "${SCRIPT_DIR}"/init-tmp-config.yaml && 
   mv "${SCRIPT_DIR}"/init-tmp-config.yaml "${SCRIPT_DIR}"/init-config.yaml &&
   sudo kubeadm init --upload-certs --config="${SCRIPT_DIR}"/init-config.yaml &&
   sudo kubeadm token create --print-join-command > "${SCRIPT_DIR}"/jointoken
