@@ -28,7 +28,7 @@ sudo modprobe overlay
 
 sudo modprobe br_netfilter
 
-sudo apk update;sudo apk upgrade;sudo apk add sudo
+sudo apk update;sudo apk upgrade;sudo apk add sudo bash nano
 
 # close ipv6
 cat <<EOF | sudo tee /etc/sysctl.conf
