@@ -21,7 +21,7 @@ etcd:
     dataDir: /var/lib/etcd
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
-kubernetesVersion: 1.26.3
+kubernetesVersion: $k8sversion
 networking:
   dnsDomain: k8s.org                                        # DNS domain used by Kubernetes Services.
   podSubnet: 10.244.0.0/16                              # the subnet used by Pods.
