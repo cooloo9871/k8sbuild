@@ -5,14 +5,14 @@ set -x
 # set -o pipefail
 
 export HOSTNAME=$(cat /etc/hostname)
-k8sversion=(kubeadm version | cut -d ',' -f3 | cut -d '"' -f2)
+export k8sversion=(sudo kubeadm version | cut -d ',' -f3 | cut -d '"' -f2)
+export IP=$(ip a s eth0 | grep inet | tr -s \ - | cut -d ' ' -f3 | cut -d '/' -f1)
 OS=$(cat /etc/os-release | grep -w ID |cut -d '=' -f2)
-IP=$(ifconfig eth0| grep inet | tr -s \ - | cut -d ":" -f2 | cut -d ' ' -f1 )
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 CNI="flannel"
 
 CHECK_VAR() {
- var_names=("OS" "IP" "SCRIPT_DIR" "CNI")
+ var_names=("HOSTNAME" "k8sversion" "OS" "IP" "SCRIPT_DIR" "CNI")
   for var_name in "${var_names[@]}"
   do
       [ -z "${!var_name}" ] && echo "$var_name is unset." && exit 1
@@ -116,12 +116,12 @@ EOF
 
 sudo rc-update add kubelet default
 
-sudo rc-service kubelet start
 }
 
 INIT_K8S() {
   cat "${SCRIPT_DIR}"/init-config.yaml | envsubst > "${SCRIPT_DIR}"/init-tmp-config.yaml && mv "${SCRIPT_DIR}"/init-tmp-config.yaml "${SCRIPT_DIR}"/init-config.yaml
-  sudo kubeadm init --upload-certs --config="${SCRIPT_DIR}"/init-config.yaml
+  sudo kubeadm init --upload-certs --config="${SCRIPT_DIR}"/init-config.yaml &&
+  sudo kubeadm token create --print-join-command > "${SCRIPT_DIR}"/jointoken
   if [ "$?" == "0" ]; then
     echo "Starting control-plane ok"
     sleep 6
@@ -143,7 +143,7 @@ INSTALL_CNI() {
 
 SET_K8S_ADMIN() {
   if ! (mkdir -p "$HOME"/.kube; sudo cp -i /etc/kubernetes/admin.conf "$HOME"/.kube/config; sudo chown "$(id -u)":"$(id -g)" "$HOME"/.kube/config); then
-    echo "$(hostname) Set bigred as admin failed!" && exit 1
+    echo "$(HOSTNAME) Set $USER as admin failed!" && exit 1
   fi
 }
 
@@ -160,7 +160,7 @@ if [ "$OS" == "alpine" ]; then
   CHECK_VAR
   ALPINE
   INIT_K8S
-  INSTALL_CNI
   SET_K8S_ADMIN
   UNTAINT
+  INSTALL_CNI
 fi
