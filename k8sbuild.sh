@@ -134,8 +134,7 @@ INIT_K8S() {
 INSTALL_CNI() {
   if [ "$CNI" == "calico" ]; then
     kubectl create -f "${SCRIPT_DIR}"/cni/calico.yaml
-  fi
-  if [ "$CNI" == "flannel" ]; then
+  elif [ "$CNI" == "flannel" ]; then
     kubectl apply -f "${SCRIPT_DIR}"/cni/kube-flannel.yml
   fi
 }
