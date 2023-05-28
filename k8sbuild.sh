@@ -9,7 +9,7 @@ export k8sversion=(sudo kubeadm version | cut -d ',' -f3 | cut -d '"' -f2)
 export IP=$(ip a s eth0 | grep inet | tr -s \ - | cut -d ' ' -f3 | cut -d '/' -f1)
 OS=$(cat /etc/os-release | grep -w ID |cut -d '=' -f2)
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-CNI="flannel"
+CNI="calico"
 
 CHECK_VAR() {
  var_names=("HOSTNAME" "k8sversion" "OS" "IP" "SCRIPT_DIR" "CNI")
