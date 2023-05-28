@@ -134,11 +134,9 @@ INIT_K8S() {
 INSTALL_CNI() {
   if [ "$CNI" == "calico" ]; then
     kubectl create -f "${SCRIPT_DIR}"/cni/calico.yaml
-    [ "$?" != "0" ] && echo "Setup CNI Error" && exit 1
   fi
   if [ "$CNI" == "flannel" ]; then
     kubectl apply -f "${SCRIPT_DIR}"/cni/kube-flannel.yml
-    [ "$?" != "0" ] && echo "Setup CNI Error" && exit 1
   fi
 }
 
@@ -157,6 +155,7 @@ UNTAINT() {
   fi
 }
 
+
 if [ "$OS" == "alpine" ]; then
   CHECK_VAR
   ALPINE
@@ -164,4 +163,5 @@ if [ "$OS" == "alpine" ]; then
   SET_K8S_ADMIN
   UNTAINT
   INSTALL_CNI
+  watch -n 1 kubectl get nodes -owide
 fi
