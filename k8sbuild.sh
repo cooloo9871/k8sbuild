@@ -91,7 +91,7 @@ sudo swapoff -a
 
 sudo sed -i '/swap/s/^/#/' /etc/fstab
 
-cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
+cat <<EOF | sudo tee /etc/modules
 overlay
 br_netfilter
 EOF
