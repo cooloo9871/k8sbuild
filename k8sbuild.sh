@@ -37,7 +37,7 @@ sudo mkdir -p /etc/cni/podman
 
 sudo mv /etc/cni/net.d/cni.lock /etc/cni/podman/
 
-sudo sed -i "326cnetwork_config_dir = "/etc/cni/podman"" /etc/containers/containers.conf
+sudo sed -i "326cnetwork_config_dir = \"/etc/cni/podman\"" /etc/containers/containers.conf
 
 # install k8s
 sudo apk add kubeadm kubelet kubectl --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
