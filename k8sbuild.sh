@@ -108,7 +108,7 @@ cgroup_manager = "cgroupfs"
 EOF
 
 # install k8s
-sudo apk add kubeadm kubelet kubectl --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+sudo apk add kubeadm kubelet kubectl --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 
 sudo rc-update add kubelet default
 }
