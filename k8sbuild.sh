@@ -113,6 +113,8 @@ cgroup_manager = "cgroupfs"
 EOF
 
 sudo rc-update add kubelet default
+
+sudo rc-service kubelet start
 }
 
 INIT_K8S() {
