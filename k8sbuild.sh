@@ -96,7 +96,7 @@ overlay
 br_netfilter
 EOF
 
-sudo modprobe br_netfilter
+sudo modprobe br_netfilter overlay
 
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf
 
