@@ -39,8 +39,11 @@ sudo mv /etc/cni/net.d/cni.lock /etc/cni/podman/
 
 sudo sed -i "326cnetwork_config_dir = "/etc/cni/podman"" /etc/containers/containers.conf
 
+# install k8s
+sudo apk add kubeadm kubelet kubectl --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
+
 # install cri-o
-sudo apk add cri-o cri-tools --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+sudo apk add cri-o --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 sudo rc-service crio start
 
@@ -106,9 +109,6 @@ cat <<EOF | sudo tee /etc/crio/crio.conf.apk-new
 conmon_cgroup = "pod"
 cgroup_manager = "cgroupfs"
 EOF
-
-# install k8s
-sudo apk add kubeadm kubelet kubectl --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 
 sudo rc-update add kubelet default
 }
